@@ -1,31 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Sidebar from './_components/Sidebar';
 import MainContent from './_components/MainContent';
 import UploadModal from './_components/UploadModal';
 import ShareModal from './_components/ShareModal';
 import RenameModal from './_components/RenameModal';
 import PreviewModal from './_components/PreviewModal';
-
-export interface FileData {
-  id: string;
-  name: string;
-  size: string;
-  uploadDate: string;
-  type: string;
-  isFolder?: boolean;
-  starred?: boolean;
-  shared?: boolean;
-  owner?: string;
-  permissions?: 'view' | 'edit' | 'owner';
-  sharedWith?: string[];
-  parentId?: string;
-  path?: string[];
-  lastModified?: string;
-  version?: number;
-  tags?: string[];
-  description?: string;
-}
+import {FileData} from "./_modules/FileData";
 
 function App() {
   const [activeView, setActiveView] = useState('my-drive');
@@ -41,119 +22,14 @@ function App() {
   const [selectedFileForAction, setSelectedFileForAction] = useState<FileData | null>(null);
   const [sortBy, setSortBy] = useState<'name' | 'date' | 'size' | 'type'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [files, setFiles] = useState<FileData[]>([]);
 
-  const [files, setFiles] = useState<FileData[]>([
-    {
-      id: '1',
-      name: 'Documents',
-      size: '—',
-      uploadDate: 'Dec 15, 2024',
-      lastModified: 'Dec 15, 2024',
-      type: 'folder',
-      isFolder: true,
-      owner: 'me',
-      permissions: 'owner',
-      version: 1,
-      tags: ['work'],
-      description: 'Work documents folder'
-    },
-    {
-      id: '2',
-      name: 'Photos',
-      size: '—',
-      uploadDate: 'Dec 14, 2024',
-      lastModified: 'Dec 14, 2024',
-      type: 'folder',
-      isFolder: true,
-      starred: true,
-      owner: 'me',
-      permissions: 'owner',
-      version: 1,
-      tags: ['personal'],
-      description: 'Personal photos collection'
-    },
-    {
-      id: '3',
-      name: 'Project Presentation.pdf',
-      size: '2.4 MB',
-      uploadDate: 'Dec 13, 2024',
-      lastModified: 'Dec 13, 2024',
-      type: 'application/pdf',
-      starred: true,
-      owner: 'me',
-      permissions: 'owner',
-      version: 3,
-      tags: ['work', 'presentation'],
-      description: 'Q4 project presentation slides'
-    },
-    {
-      id: '4',
-      name: 'Summer Vacation.jpg',
-      size: '1.8 MB',
-      uploadDate: 'Dec 12, 2024',
-      lastModified: 'Dec 12, 2024',
-      type: 'image/jpeg',
-      owner: 'me',
-      permissions: 'owner',
-      version: 1,
-      tags: ['personal', 'vacation'],
-      description: 'Summer vacation memories'
-    },
-    {
-      id: '5',
-      name: 'Meeting Recording.mp4',
-      size: '45.2 MB',
-      uploadDate: 'Dec 11, 2024',
-      lastModified: 'Dec 11, 2024',
-      type: 'video/mp4',
-      owner: 'me',
-      permissions: 'owner',
-      version: 1,
-      tags: ['work', 'meeting'],
-      description: 'Team meeting recording'
-    },
-    {
-      id: '6',
-      name: 'Financial Report.xlsx',
-      size: '1.2 MB',
-      uploadDate: 'Dec 10, 2024',
-      lastModified: 'Dec 10, 2024',
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      shared: true,
-      owner: 'john.doe@company.com',
-      permissions: 'edit',
-      sharedWith: ['me', 'jane.smith@company.com'],
-      version: 2,
-      tags: ['work', 'finance'],
-      description: 'Monthly financial report'
-    },
-    {
-      id: '7',
-      name: 'Company Logo.png',
-      size: '256 KB',
-      uploadDate: 'Dec 9, 2024',
-      lastModified: 'Dec 9, 2024',
-      type: 'image/png',
-      owner: 'me',
-      permissions: 'owner',
-      version: 1,
-      tags: ['work', 'branding'],
-      description: 'Official company logo'
-    },
-    {
-      id: '8',
-      name: 'Background Music.mp3',
-      size: '3.7 MB',
-      uploadDate: 'Dec 8, 2024',
-      lastModified: 'Dec 8, 2024',
-      type: 'audio/mp3',
-      owner: 'me',
-      permissions: 'owner',
-      version: 1,
-      tags: ['personal', 'music'],
-      description: 'Background music for videos'
-    }
-  ]);
+  useEffect(() => {
+    fetch("/data.json")
+        .then((response) => response.json())
+        .then((jsonData) => setFiles(jsonData))
+        .catch((error) => console.log('Error fetching data:', error));
+  }, []);
 
   const handleFileUpload = (newFiles: File[]) => {
     const uploadedFiles: FileData[] = newFiles.map((file, index) => ({

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Users, Link, Mail, Copy, Check } from 'lucide-react';
-import { FileData } from '../page';
+import { FileData } from '../_modules/FileData';
 
 interface ShareModalProps {
   isOpen: boolean;

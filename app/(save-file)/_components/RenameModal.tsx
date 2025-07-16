@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Edit3 } from 'lucide-react';
-import { FileData } from '../page';
+import { FileData } from '../_modules/FileData';
 
 interface RenameModalProps {
   isOpen: boolean;

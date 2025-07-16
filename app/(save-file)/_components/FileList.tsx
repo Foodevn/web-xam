@@ -15,7 +15,7 @@ import {
   Eye,
   Trash2
 } from 'lucide-react';
-import { FileData } from '../page';
+import { FileData } from '../_modules/FileData';
 
 interface FileListProps {
   files: FileData[];

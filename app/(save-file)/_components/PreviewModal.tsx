@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Download, Share2, Star, MoreVertical, FileText, Image, Video, Music, Archive } from 'lucide-react';
-import { FileData } from '../page';
+import { FileData } from '../_modules/FileData';
 
 interface PreviewModalProps {
   isOpen: boolean;

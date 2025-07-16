@@ -3,7 +3,7 @@ import TopBar from './TopBar';
 import FileGrid from './FileGrid';
 import FileList from './FileList';
 import Breadcrumbs from './Breadcrumbs';
-import { FileData } from '../page';
+import { FileData } from '../_modules/FileData';
 
 interface MainContentProps {
   files: FileData[];

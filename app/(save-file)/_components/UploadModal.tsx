@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { X, Upload, Cloud, File, FolderPlus } from 'lucide-react';
+import React, {useEffect, useRef, useState} from 'react';
+import {Cloud, File, FolderPlus, Upload, X} from 'lucide-react';
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -15,6 +15,12 @@ export default function UploadModal({ isOpen, onClose, onFileUpload, onCreateFol
   const [folderName, setFolderName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (showFolderInput && folderInputRef.current) {
+      folderInputRef.current.focus();
+    }
+  }, [showFolderInput]);
 
   if (!isOpen) return null;
 
@@ -42,10 +48,10 @@ export default function UploadModal({ isOpen, onClose, onFileUpload, onCreateFol
 
   const processFiles = (files: File[]) => {
     if (files.length === 0) return;
-    
+
     const fileNames = files.map(f => f.name);
     setUploadingFiles(fileNames);
-    
+
     setTimeout(() => {
       onFileUpload(files);
       setUploadingFiles([]);
@@ -70,14 +76,9 @@ export default function UploadModal({ isOpen, onClose, onFileUpload, onCreateFol
     }
   };
 
-  React.useEffect(() => {
-    if (showFolderInput && folderInputRef.current) {
-      folderInputRef.current.focus();
-    }
-  }, [showFolderInput]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-md w-full">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -94,7 +95,7 @@ export default function UploadModal({ isOpen, onClose, onFileUpload, onCreateFol
         <div className="p-4">
           {/* Quick Actions */}
           <div className="space-y-2 mb-6">
-            <button 
+            <button
               onClick={() => setShowFolderInput(true)}
               className="flex items-center space-x-3 w-full p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
             >
@@ -134,7 +135,7 @@ export default function UploadModal({ isOpen, onClose, onFileUpload, onCreateFol
                 </div>
               </div>
             )}
-            
+
             <button
               onClick={() => fileInputRef.current?.click()}
               className="flex items-center space-x-3 w-full p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
